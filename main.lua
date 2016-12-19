@@ -41,6 +41,7 @@ end
 
 function love.load()
     local rnd = math.random
+    --make a bunch of rectangles
     for i = 1, 10 do
         r[i] = rect(rnd(800),rnd(600),100,100,rnd()*math.pi*2)
         r[i].c = hsl2rgb(rnd(255),128,128,255)
@@ -49,28 +50,27 @@ function love.load()
 end
 
 function love.update(dt)
-    --r[1].r = r[1].r + math.rad(1)
     r[1].x, r[1].y = love.mouse.getPosition()
-    
+    -- move the first rect to the mouse
 end
 
 function love.draw()
     local y = calculateBottomPoint(r[1])
-    local c
+    local color
     for i = #r, 1, -1 do
         if r[i].y < y then
-            c = hsl2rgb(r[i].c[1], 1, 128, 255)
+            color = hsl2rgb(r[i].c[1], 1, 128, 255)
         else
-            c = r[i].c
+            color = r[i].c
         end
-        love.graphics.setColor(c)
+        love.graphics.setColor(color)
         love.graphics.polygon("fill", getPoints(r[i]))
         love.graphics.setColor(0,0,0)
         love.graphics.polygon("line", getPoints(r[i]))
         love.graphics.setColor(255,255,255)
         love.graphics.circle("fill", r[i].x, r[i].y, 8)
     end
+    
     love.graphics.setColor(255,255,255)
     love.graphics.line(0, y, 800, y)
-    love.graphics.print(love.timer.getFPS(),16,16)
 end
